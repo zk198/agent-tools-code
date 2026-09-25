@@ -1,12 +1,29 @@
 services:
-  code:
+  code-api:
     build: .
-    ports:
-      - "8000:8000"
-      - "8001:8001"
+    ports: ["8000:8000","8001:8001"]
+    environment:
+      CODE_WORKER_URL: http://code-worker:9000
+    networks: [code-internal, code-api]
     read_only: true
     cap_drop: ["ALL"]
     security_opt: ["no-new-privileges:true"]
     pids_limit: 128
+    mem_limit: 256m
+    cpus: 1.0
+  code-worker:
+    build: .
+    command: ["uvicorn","agent_tools_code.worker:app","--host","0.0.0.0","--port","9000"]
+    expose: ["9000"]
+    networks: [code-internal]
+    read_only: true
+    tmpfs: ["/tmp:size=64m,noexec,nosuid,nodev"]
+    cap_drop: ["ALL"]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 64
     mem_limit: 512m
     cpus: 1.0
+networks:
+  code-internal:
+    internal: true
+  code-api:
