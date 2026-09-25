@@ -16,7 +16,7 @@ class CodeExecutionService:
             stdout, stderr = await asyncio.wait_for(
                 proc.communicate(), timeout=request.timeout_seconds
             )
-        except asyncio.TimeoutError:
+        except TimeoutError:
             proc.kill()
             await proc.wait()
             return ExecuteResponse(status="timeout", stdout="", stderr="execution timed out", exit_code=None)
