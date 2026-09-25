@@ -18,7 +18,7 @@ jobs:
       - run: uv run mypy src
       - run: uv run pytest --cov=agent_tools_code --cov-report=term-missing --cov-fail-under=70
       - run: docker build -t agent-tools-code:test .
-      - uses: aquasecurity/trivy-action@0.33.1
+      - uses: aquasecurity/trivy-action@v0.36.0
         with:
           image-ref: agent-tools-code:test
           format: table
