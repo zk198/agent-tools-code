@@ -9,4 +9,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 RUN useradd --create-home --uid 10001 appuser
 USER appuser
 EXPOSE 8000 8001
-CMD ["sh", "-c", "uvicorn agent_tools_code.api:app --host 0.0.0.0 --port 8000 & API=$!; python -c 'from agent_tools_code.mcp import mcp; mcp.run(transport="http", host="0.0.0.0", port=8001)'"]
+CMD ["sh", "-c", "uvicorn agent_tools_code.api:app --host 0.0.0.0 --port 8000 & API=$!; uvicorn agent_tools_code.mcp:mcp_app --host 0.0.0.0 --port 8001"]
