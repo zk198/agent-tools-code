@@ -9,4 +9,4 @@ ENV PATH="/app/.venv/bin:$PATH"
 RUN useradd --create-home --uid 10001 appuser
 USER appuser
 EXPOSE 8000 8001
-CMD ["sh", "-c", "uvicorn agent_tools_code.api:app --host 0.0.0.0 --port 8000 & API=$!; python -m agent_tools_code.mcp & MCP=$!; while kill -0 $API 2>/dev/null && kill -0 $MCP 2>/dev/null; do sleep 1; done; kill $API $MCP 2>/dev/null || true; wait $API $MCP 2>/dev/null || true"]
+CMD ["sh", "-c", "uvicorn agent_tools_code.api:app --host 0.0.0.0 --port 8000 & API=$!; fastmcp run src/agent_tools_code/mcp.py:mcp --transport http --host 0.0.0.0 --port 8001 & MCP=$!; while kill -0 $API 2>/dev/null && kill -0 $MCP 2>/dev/null; do sleep 1; done; kill $API $MCP 2>/dev/null || true; wait $API $MCP 2>/dev/null || true"]
