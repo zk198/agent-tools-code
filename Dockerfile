@@ -5,8 +5,10 @@ COPY pyproject.toml uv.lock* ./
 RUN uv sync --locked --no-dev --no-install-project
 COPY src ./src
 RUN uv sync --locked --no-dev
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH" \
+    PYTHONPATH="/app/src"
+ENV PYTHONPATH="/app/src"
 RUN useradd --create-home --uid 10001 appuser
 USER appuser
 EXPOSE 8000 8001
-CMD ["uvicorn", "agent_tools_code.api:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c", "uvicorn agent_tools_code.api:app --host 0.0.0.0 --port 8000 & API=$!; uvicorn agent_tools_code.mcp:mcp_app --host 0.0.0.0 --port 8001"]
