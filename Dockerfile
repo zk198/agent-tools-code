@@ -6,6 +6,7 @@ RUN uv sync --locked --no-dev --no-install-project
 COPY src ./src
 RUN uv sync --locked --no-dev
 ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app/src"
 RUN useradd --create-home --uid 10001 appuser
 USER appuser
 EXPOSE 8000 8001
