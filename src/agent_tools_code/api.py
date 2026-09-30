@@ -3,7 +3,7 @@ from fastapi import APIRouter, FastAPI, HTTPException
 from .models import ExecuteRequest, ExecuteResponse
 from .service import CodeExecutionService
 
-service = CodeExecutionService(os.getenv("CODE_WORKER_URL", "http://code-worker:9000"))
+service = CodeExecutionService(os.environ["CODE_WORKER_URL"])
 app = FastAPI(title="Agent Tools Code", version="0.1.0")
 router = APIRouter(prefix="/v1")
 
