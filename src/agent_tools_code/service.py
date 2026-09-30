@@ -1,8 +1,10 @@
 import httpx
+
 from .models import ExecuteRequest, ExecuteResponse
 
+
 class CodeExecutionService:
-    def __init__(self, worker_url: str = "http://code-worker:9000") -> None:
+    def __init__(self, worker_url: str) -> None:
         self.worker_url = worker_url
 
     async def run_python(self, request: ExecuteRequest) -> ExecuteResponse:
